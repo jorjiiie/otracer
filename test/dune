@@ -1,0 +1,3 @@
+(test
+ (name otracer_t)
+ (libraries otracer ounit2))
