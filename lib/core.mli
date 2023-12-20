@@ -44,7 +44,7 @@ val vec3_dist_sq : vec3 -> vec3 -> float
 val vec3_dist : vec3 -> vec3 -> float
 (** [vec3_dist u v] gives distance between [u] and [v] *)
 
-val vec3_unit : vec3 -> vec3 
+val vec3_unit : vec3 -> vec3
 (** [vec3_unit v] returns a unit direction pointing in [v]'s direction *)
 
 val ( @@ ) : vec3 -> vec3 -> float

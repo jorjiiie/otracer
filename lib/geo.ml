@@ -4,7 +4,7 @@ type vec3 = Core.vec3
 type ray = Core.ray
 type material = Blue | Red
 type shape = Sphere of (vec3 * float)
-type primitive = (material * shape)
+type primitive = material * shape
 type hit_info = { pos : vec3; mat : material }
 
 let sphere_intersect (o, d) (p, r) =
@@ -17,9 +17,7 @@ let sphere_intersect (o, d) (p, r) =
   else
     let ins = sqrt disc in
     let s1 = (-.b -. ins) /. (2. *. a) in
-    if s1 >= 0. then begin 
-      Some s1
-    end
+    if s1 >= 0. then Some s1
     else
       let s2 = (-.b +. ins) /. (2. *. a) in
       Some s2

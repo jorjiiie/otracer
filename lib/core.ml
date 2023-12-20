@@ -23,14 +23,9 @@ let ( -- ) = vec3_sub
 let ( ** ) = vec3_scale
 let vec3_norm_sq v = v @@ v
 let vec3_norm v = sqrt (v @@ v)
-let vec3_dist_sq u v = 
-  vec3_norm_sq (u -- v)
-
-let vec3_dist u v = 
-  vec3_norm (u -- v)
-
-let vec3_unit v =
-  (1.0 /. (vec3_norm v)) ** v
+let vec3_dist_sq u v = vec3_norm_sq (u -- v)
+let vec3_dist u v = vec3_norm (u -- v)
+let vec3_unit v = (1.0 /. vec3_norm v) ** v
 
 type ray = vec3 * vec3
 type pixel = { r : float; g : float; b : float }
