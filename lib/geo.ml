@@ -45,8 +45,7 @@ let sphere_intersect (o, d) (p, r) =
     if s1 >= 0. then Some s1
     else
       let s2 = (-.b +. ins) /. (2. *. a) in
-      if s2 >= 0. then 
-      Some s2 else None
+      if s2 >= 0. then Some s2 else None
 
 let intersect r (m, obj) =
   let int_t =
@@ -70,7 +69,6 @@ type world = primitive list
 
 let make_world lst = lst
 
-
 (* world -> ray -> Option*)
 let rec world_intersect (w : world) (r : ray) (time : float)
     (b : hit_info option) : hit_info option =
@@ -83,7 +81,6 @@ let rec world_intersect (w : world) (r : ray) (time : float)
           if tm < time then world_intersect t r tm hit
           else world_intersect t r time b)
 
-
 let rec bounce w r b =
   if b <= 0 then Core.pix_broadcast 0.
   else
@@ -92,8 +89,6 @@ let rec bounce w r b =
     | Some { pos = p; mat = m; time = t; normal = n } as hit ->
         (* if inside u should really flip the normal here *)
         let new_ray = (p ++ (0.001 ** n), material_sample m r n) in
-        let col = (bounce w new_ray (b-1)) in 
-        let _, dd = new_ray in 
-        pix_add (material_emit m)
-          (pix_mul (material_att m) col)
-
+        let col = bounce w new_ray (b - 1) in
+        let _, dd = new_ray in
+        pix_add (material_emit m) (pix_mul (material_att m) col)

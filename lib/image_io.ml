@@ -6,8 +6,7 @@ type imageWriter = { width : int; height : int; gamma : float }
 type pixel = Core.pixel
 type inxel = { ir : int; ig : int; ib : int }
 
-let clamp x mn mx = 
-  max mn (min mx x)
+let clamp x mn mx = max mn (min mx x)
 
 let inxel_of_pixel (p : pixel) : inxel =
   {
