@@ -27,12 +27,21 @@ let vec3_dist_sq u v = vec3_norm_sq (u -- v)
 let vec3_dist u v = vec3_norm (u -- v)
 let vec3_unit v = (1.0 /. vec3_norm v) ** v
 
+let vec3_cross u v =
+  {
+    x = (u.y *. v.z) -. (u.z *. v.y);
+    y = (u.z *. v.x) -. (u.x *. v.z);
+    z = (u.x *. v.y) -. (u.y *. v.x);
+  }
+
 type ray = vec3 * vec3
 type pixel = { r : float; g : float; b : float }
 
+let pix_make x y z = { r = x; g = y; b = z }
 let pix_broadcast a = { r = a; g = a; b = a }
 let vec3_of_pixel p = { x = p.r; y = p.g; z = p.b }
 let pixel_of_vec3 v = { r = v.x; g = v.y; b = v.z }
 let pix_binop f u v = pixel_of_vec3 (f (vec3_of_pixel u) (vec3_of_pixel v))
 let pix_add x y = pix_binop vec3_add x y
 let pix_scale r v = pix_binop vec3_mul v (pix_broadcast r)
+let pix_mul a b = pix_binop vec3_mul a b

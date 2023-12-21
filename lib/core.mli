@@ -47,6 +47,9 @@ val vec3_dist : vec3 -> vec3 -> float
 val vec3_unit : vec3 -> vec3
 (** [vec3_unit v] returns a unit direction pointing in [v]'s direction *)
 
+val vec3_cross : vec3 -> vec3 -> vec3
+(** [vec3_cross u v] gives the cross product of [u] and [v] *)
+
 val ( @@ ) : vec3 -> vec3 -> float
 (** [x @@ y] dot product [x] and [y] *)
 
@@ -65,6 +68,9 @@ type ray = vec3 * vec3
 type pixel = { r : float; g : float; b : float }
 (** defines a pixel type with 3 components*)
 
+val pix_make : float -> float -> float -> pixel
+(** [pix_make r g b] makes a pixel with [r] [g] [b]*)
+
 val pix_broadcast : float -> pixel
 (** [pix_broadcast a] makes a pixel with [a]*)
 
@@ -79,3 +85,6 @@ val pix_add : pixel -> pixel -> pixel
 
 val pix_scale : float -> pixel -> pixel
 (** [pix_scale r b] multiples each component of [b] by [r] *)
+
+val pix_mul : pixel -> pixel -> pixel
+(** [pix_mul a b] multiplies component wide [a] and [b]*)
