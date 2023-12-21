@@ -15,7 +15,7 @@ let rec random_sphere _ =
   let y = Random.float 2. -. 1. in
   let z = Random.float 2. -. 1. in
   if (x *. x) +. (y *. y) +. (z *. z) >= 1. then random_sphere 69
-  else vec3_make x y z
+  else vec3_unit (vec3_make x y z)
 
 let matte_sample (o, d) n =
   let v = random_sphere 69 in
@@ -34,7 +34,7 @@ let shape_normal s v =
 
 let sphere_intersect (o, d) (p, r) =
   let a = Core.vec3_norm_sq d in
-  let b = -2. *. Core.vec3_dot d (Core.vec3_sub p o) in
+  let b = 2. *. Core.vec3_dot d (Core.vec3_sub o p) in
   let sb = Core.vec3_sub p o in
   let c = Core.vec3_dot sb sb -. (r *. r) in
   let disc = (b *. b) -. (4. *. a *. c) in
@@ -45,7 +45,8 @@ let sphere_intersect (o, d) (p, r) =
     if s1 >= 0. then Some s1
     else
       let s2 = (-.b +. ins) /. (2. *. a) in
-      Some s2
+      if s2 >= 0. then 
+      Some s2 else None
 
 let intersect r (m, obj) =
   let int_t =
@@ -69,6 +70,7 @@ type world = primitive list
 
 let make_world lst = lst
 
+
 (* world -> ray -> Option*)
 let rec world_intersect (w : world) (r : ray) (time : float)
     (b : hit_info option) : hit_info option =
@@ -81,6 +83,7 @@ let rec world_intersect (w : world) (r : ray) (time : float)
           if tm < time then world_intersect t r tm hit
           else world_intersect t r time b)
 
+
 let rec bounce w r b =
   if b <= 0 then Core.pix_broadcast 0.
   else
@@ -88,7 +91,9 @@ let rec bounce w r b =
     | None -> pix_make 0.2 0.4 0.4
     | Some { pos = p; mat = m; time = t; normal = n } as hit ->
         (* if inside u should really flip the normal here *)
-        let new_ray = (p ++ (0.00001 ** n), material_sample m r n) in
+        let new_ray = (p ++ (0.001 ** n), material_sample m r n) in
         let col = (bounce w new_ray (b-1)) in 
+        let _, dd = new_ray in 
         pix_add (material_emit m)
           (pix_mul (material_att m) col)
+

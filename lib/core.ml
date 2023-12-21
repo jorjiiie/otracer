@@ -1,6 +1,6 @@
 type vec3 = { x : float; y : float; z : float }
 
-let float_cmp a b = abs_float (a -. b) < 0.000001
+let float_cmp a b = abs_float (a -. b) < 0.0000001
 let vec3_make a b c = { x = a; y = b; z = c }
 let vec3_broadcast a = { x = a; y = a; z = a }
 let vec3_comp { x = a; y = b; z = c } = (a, b, c)
