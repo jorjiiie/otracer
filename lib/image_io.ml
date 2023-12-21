@@ -6,11 +6,14 @@ type imageWriter = { width : int; height : int; gamma : float }
 type pixel = Core.pixel
 type inxel = { ir : int; ig : int; ib : int }
 
+let clamp x mn mx = 
+  max mn (min mx x)
+
 let inxel_of_pixel (p : pixel) : inxel =
   {
-    ir = int_of_float (p.r *. 255.);
-    ig = int_of_float (p.g *. 255.);
-    ib = int_of_float (p.b *. 255.);
+    ir = clamp (int_of_float (p.r *. 255.)) 0 255;
+    ig = clamp (int_of_float (p.g *. 255.)) 0 255;
+    ib = clamp (int_of_float (p.b *. 255.)) 0 255;
   }
 
 let comp_map (f : float -> float) ({ r = x; g = y; b = z } : pixel) : pixel =

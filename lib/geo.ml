@@ -87,6 +87,8 @@ let rec bounce w r b =
     match world_intersect w r max_float None with
     | None -> pix_make 0.2 0.4 0.4
     | Some { pos = p; mat = m; time = t; normal = n } as hit ->
-        let new_ray = (p, material_sample m r n) in
+        (* if inside u should really flip the normal here *)
+        let new_ray = (p ++ (0.00001 ** n), material_sample m r n) in
+        let col = (bounce w new_ray (b-1)) in 
         pix_add (material_emit m)
-          (pix_mul (material_att m) (bounce w new_ray (b - 1)))
+          (pix_mul (material_att m) col)
